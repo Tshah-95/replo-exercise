@@ -39,6 +39,9 @@ const Block = ({
           // (inefficient since it refreshes all blocks, but it'd be a start)
           setLocalText(e.target.value);
 
+          // mutating like this after editing is insane... and creates duplicates on each addition.
+          // i should probably just do these mutations optimistically and deal with failures async
+          // since having load times is awful ux... right now it's just busted as fuck
           if (!id) {
             fetch(`/api/block`, {
               method: "POST",
