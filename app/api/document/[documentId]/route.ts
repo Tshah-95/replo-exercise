@@ -18,36 +18,3 @@ export const GET = async (_: any, { params }: any) => {
     throw new Error("Community not found");
   }
 };
-
-export const POST = async (
-  req: NextRequest,
-  {
-    params,
-  }: {
-    params: {
-      documentId: string;
-    };
-  }
-) => {
-  const { documentId } = params;
-  const body = await req.json();
-
-  try {
-    const block = await prisma.block.create({
-      data: {
-        documentId: parseInt(documentId),
-        position: body.position,
-        type: body.type,
-        text: body.text,
-      },
-    });
-
-    return NextResponse.json(block);
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json(
-      { error: "An error occurred while creating the block" },
-      { status: 500 }
-    );
-  }
-};
