@@ -1,6 +1,35 @@
 import prisma from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export const GET = async (
+  _: any,
+  {
+    params,
+  }: {
+    params: {
+      blockId: string;
+    };
+  }
+) => {
+  const { blockId } = params;
+
+  try {
+    const block = await prisma.block.findUnique({
+      where: {
+        id: parseInt(blockId),
+      },
+    });
+
+    return NextResponse.json(block);
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "An error occurred while fetching the block" },
+      { status: 500 }
+    );
+  }
+};
+
 export const PUT = async (
   req: NextRequest,
   {
